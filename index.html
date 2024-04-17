@@ -1,0 +1,59 @@
+<!DOCTYPE html> 
+<div class="todo-container">
+    <h2>To-Do List</h2>
+    <input type="text" id="todoInput" class="todo-input" placeholder="Add new todo...">
+    <div id="todoList"></div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const todoInput = document.getElementById("todoInput");
+        const todoList = document.getElementById("todoList");
+
+        todoInput.addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                addTodo();
+            }
+        });
+
+        function addTodo() {
+            const todoText = todoInput.value.trim();
+            if (todoText === "") return;
+
+            const todoItem = document.createElement("div");
+            todoItem.className = "todo-item";
+            const checkbox = document.createElement("input");
+            checkbox.type = "checkbox";
+            const todoTextSpan = document.createElement("span");
+            todoTextSpan.textContent = todoText;
+
+            checkbox.addEventListener("change", function() {
+                if (checkbox.checked) {
+                    todoItem.classList.add("completed");
+                } else {
+                    todoItem.classList.remove("completed");
+                }
+            });
+
+            const editButton = document.createElement("button");
+            editButton.textContent = "Edit";
+            editButton.addEventListener("click", function() {
+                editTodo(todoTextSpan);
+            });
+
+            todoItem.appendChild(checkbox);
+            todoItem.appendChild(todoTextSpan);
+            todoItem.appendChild(editButton);
+            todoList.appendChild(todoItem);
+
+            todoInput.value = "";
+        }
+
+        function editTodo(todoTextSpan) {
+            const newText = prompt("Edit the todo:", todoTextSpan.textContent);
+            if (newText !== null && newText.trim() !== "") {
+                todoTextSpan.textContent = newText.trim();
+            }
+        }
+    });
+</script>
